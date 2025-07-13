@@ -76,7 +76,7 @@ const AppointmentForm = ({ date, onClose, onSave, initialData = null }) => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                         Doctor
                     </label>
-                    
+
                     <select
                         value={doctorId}
                         onChange={(e) => setDoctorId(e.target.value)}

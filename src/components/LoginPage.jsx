@@ -7,28 +7,28 @@ const LoginPage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false);
-    const[error,setErrors]=useState({email:'',password:''});
+    const [error, setErrors] = useState({ email: '', password: '' });
 
     const navigate = useNavigate()
 
-    const validate=()=>{
-        let valid=true;
-        const newErrors={email:'',password:''};
-        if(!email){
-            newErrors.email='Email is required';
-            valid=false;
+    const validate = () => {
+        let valid = true;
+        const newErrors = { email: '', password: '' };
+        if (!email) {
+            newErrors.email = 'Email is required';
+            valid = false;
         }
-        else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)){
-            newErrors.email='Invalid email format';
-            valid=false;
+        else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+            newErrors.email = 'Invalid email format';
+            valid = false;
         }
-        if(!password){
-            newErrors.password='Password is required';
-            valid=false;
+        if (!password) {
+            newErrors.password = 'Password is required';
+            valid = false;
         }
-        else if(password.length<6){
-            newErrors.password='Password must be at least 6 characters';
-            valid=false;
+        else if (password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters';
+            valid = false;
         }
         setErrors(newErrors);
         return valid;
@@ -36,31 +36,31 @@ const LoginPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
+
         if (!validate()) {
-          toast.error('Please fill out all fields.');
-          return;
+            toast.error('Please fill out all fields.');
+            return;
         }
-    
+
         // Simulate login delay
         toast.loading('Please wait...');
-    
+
         setTimeout(() => {
-          toast.dismiss(); // Remove loading toast
-    
-          if (email === 'staff@clinic.com' && password === '123456') {
-            toast.success('Login successful');
-            localStorage.setItem('email', email);
-            localStorage.setItem('isLoggedIn', 'true');
-            setTimeout(() => {
-                navigate('/calendar');
-              }, 1500);
-          } else {
-            toast.error('Invalid email or password');
-          }
+            toast.dismiss(); // Remove loading toast
+
+            if (email === 'staff@clinic.com' && password === '123456') {
+                toast.success('Login successful');
+                localStorage.setItem('email', email);
+                localStorage.setItem('isLoggedIn', 'true');
+                setTimeout(() => {
+                    navigate('/calendar');
+                }, 1500);
+            } else {
+                toast.error('Invalid email or password');
+            }
         }, 1000); // simulate API call
-      };
-    
+    };
+
     return (
         <div className="min-h-screen flex flex-col md:flex-row">
             {/* Left side image */}
@@ -84,7 +84,7 @@ const LoginPage = () => {
                             <input
                                 type="email"
                                 placeholder="Enter your email"
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 "  
+                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 "
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
@@ -123,7 +123,7 @@ const LoginPage = () => {
                             {error.password && <p className="text-red-500 text-xs mt-1">{error.password}</p>}
                         </div>
 
-                        
+
                         <button
                             type="submit"
                             className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition"
@@ -138,16 +138,16 @@ const LoginPage = () => {
                 </div>
             </div>
             <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#ffffff',
-            color: '#000000',
-            borderLeft: '5px solid #5CE65C',
-          },
-        }}
-      />
+                position="top-right"
+                toastOptions={{
+                    duration: 4000,
+                    style: {
+                        background: '#ffffff',
+                        color: '#000000',
+                        borderLeft: '5px solid #5CE65C',
+                    },
+                }}
+            />
         </div>
     );
 };

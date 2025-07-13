@@ -25,6 +25,8 @@ const CalendarPage = () => {
     const [filterDoctor, setFilterDoctor] = useState('');
     const [filterPatient, setFilterPatient] = useState('');
     const isMobile = useIsMobile();
+    const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+
 
     useEffect(() => {
         localStorage.setItem('appointments', JSON.stringify(appointments));
@@ -75,12 +77,17 @@ const CalendarPage = () => {
         setEditAppointment(null);
     };
 
+    // const handleDelete = (id) => {
+    //     const confirmDelete = window.confirm("Are you sure you want to delete this appointment?");
+    //     if (confirmDelete) {
+    //         setAppointments((prev) => prev.filter((appt) => appt.id !== id));
+    //     }
+    // };
     const handleDelete = (id) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this appointment?");
-        if (confirmDelete) {
-            setAppointments((prev) => prev.filter((appt) => appt.id !== id));
-        }
+        setAppointments((prev) => prev.filter((appt) => appt.id !== id));
+        toast.success("Appointment deleted.");
     };
+
 
     const handleSelectEvent = (event) => {
         setSelectedSlot(new Date(event.date));
@@ -167,6 +174,36 @@ const CalendarPage = () => {
                         </div>
                     </div>
 
+                    {deleteConfirmId && (
+                        <div className="fixed inset-0 flex items-center justify-center bg-white/55 bg-opacity-30 z-[9999]">
+                            <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full z-[10000]">
+                                <h2 className="text-lg font-semibold mb-4 text-gray-800">Are you sure?</h2>
+                                <p className="text-sm text-gray-600 mb-6">
+                                    Do you really want to delete this appointment? This action cannot be undone.
+                                </p>
+                                <div className="flex justify-end space-x-3">
+                                    <button
+                                        onClick={() => setDeleteConfirmId(null)}
+                                        className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-sm text-gray-800"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            handleDelete(deleteConfirmId);
+                                            setDeleteConfirmId(null);
+                                        }}
+                                        className="px-4 py-2 rounded bg-red-500 hover:bg-red-600 text-white text-sm"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+
+
 
                     {isMobile ? (
                         <div className="p-4 min-h-screen">
@@ -242,7 +279,8 @@ const CalendarPage = () => {
                                                                 <Edit3 className="w-4 h-4" />
                                                             </button>
                                                             <button
-                                                                onClick={() => handleDelete(appt.id)}
+                                                                onClick={() => setDeleteConfirmId(appt.id)}
+
                                                                 className="p-2 bg-red-100 text-red-500 rounded-full hover:bg-red-200 active:bg-red-300 transition-colors duration-150"
                                                                 aria-label="Delete appointment"
                                                             >
@@ -316,7 +354,8 @@ const CalendarPage = () => {
                                                                                 <Edit3 className="w-4 h-4" />
                                                                             </button>
                                                                             <button
-                                                                                onClick={() => handleDelete(appt.id)}
+                                                                                // onClick={() => handleDelete(appt.id)}
+                                                                                onClick={() => setDeleteConfirmId(appt.id)}
                                                                                 className="p-2 bg-red-100 text-red-500 rounded-full hover:bg-red-200 active:bg-red-300 transition-colors duration-150"
                                                                             >
                                                                                 <Trash2 className="w-4 h-4" />
@@ -344,6 +383,8 @@ const CalendarPage = () => {
                                     </div>
                                 </div>
                             )}
+
+
 
                             <div className="p-5 m-5 min-h-screen overflow-auto bg-white-100 rounded-lg shadow-md hover:shadow-lg">
                                 <Calendar
